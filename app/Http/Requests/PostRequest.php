@@ -28,14 +28,22 @@ class PostRequest extends FormRequest
         {
             case 'POST': {
                 return [
-                    "id"=>"required|max:255"
+                    "category"=>"required|exists:categories,id",
+                    "title"=>"required|max:255",
+                    "content"=>"required|max:1000",
+                    "slug"=>"required|max:255|alpha_dash|unique:posts,slug"
                 ];
             }
-            case 'POST': {
-                return ["title"=>"required|max:255"];
+            case 'PUT': {
+                return ["category"=>"required|exists:categories,id",
+                    "title"=>"required|max:255",
+                    "content"=>"required|max:1000",
+                    "slug"=>"required|max:255|alpha_dash|unique:posts,slug,".$this->segment(2)];
             }
             default:return[];
         }
+
+
 
     }
 

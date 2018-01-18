@@ -17,7 +17,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories=Category::all();
-//        return response()->json($data, 200);
+//        return response()->json($categories, 200);
         return view( "category.index",[
             "categories"=>$categories
         ]);             //views ma link gareko

@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Model\Category;
 use App\Model\Post;
 use App\Http\Requests\PostRequest;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PostController extends Controller
 {
@@ -15,7 +17,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts=Post::all();
+        $posts=Post::orderBy('id','asc')->paginate(10);
         return view( "post.index",[
             "posts"=>$posts]);
     }
@@ -27,7 +29,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('post/create');
+        $categories=Category::all();
+        return view('post/create',[
+            "categories"=>$categories]);
     }
 
     /**
@@ -39,11 +43,15 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         $post= new Post();
-        $post->id=$request->get("id");
+//        $post->id=$request->get("id");
         $post->title=$request->get("title");
-        $post->slug=str_slug($request->get("title"));
-        $post->category_id=$request->get('category_id');
+        $post->content=$request->get("content");
+        $post->image="http://lorempixel.com/200/400";
+        $post->slug=str_slug($request->get("content"));
+        $post->category_id=$request->get('category');
         $post->save();
+
+        Session::flash("success","New post has been added.");
 
         return redirect("/post");
 
@@ -55,18 +63,21 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($content)
+    public function show($id)
     {
-        $post=Post::where('Content','=',$content)->first();
-        if(!$post){
-            abort(404);
-        }
-        $post->Content=$content;
-        $post->save();
-//        $post->delete();
-////                return response()->json($posts, 200);
-        $data=$post::all();
-        return $data;
+//        $post=Post::where('Content','=',$content)->first();
+//        if(!$post){
+//            abort(404);
+//        }
+//        $post->Content=$content;
+//        $post->save();
+////        $post->delete();
+//////                return response()->json($posts, 200);
+//        $data=$post::all();
+//        return $data;
+        $post=Post::find($id);
+
+        return view("post.show", ['post'=>$post]);
     }
 
     /**
@@ -77,9 +88,12 @@ class PostController extends Controller
      */
     public function edit($id)
     {
+        $categories=Category::all();
         $post=Post::findorfail($id);
         return view('post.edit', [
-            'post'=>$post]);
+            'categories'=>$categories,
+            'post'=>$post
+        ]);
     }
 
     /**
@@ -89,15 +103,20 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, $id)
     {
         $post=Post::findorfail($id);
-        $post->id=$request->get('id');
+//        $post->id=$request->get('id');
         $post->title=$request->get('title');
-        $post->slug=str_slug($request->get('title'));
-        $post->category_id=$request->get('category_id');
+        $post->content=$request->get('content');
+//        $post->slug=str_slug($request->get('title'));
+        $post->category_id=$request->get('category');
+        $post->image="http://lorempixel.com/200/400";
         $post->save();
-        return redirect()->route('post.index');
+
+        Session::flash("success","Post has been updated");
+
+        return back();
     }
 
     /**

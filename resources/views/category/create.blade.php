@@ -13,9 +13,11 @@
                </ul>
                    <div class="form-group">
                        <label for="name">Id</label>
-                       <input type ="text" class="form-control" name="id" >
+                       <input type ="text" class="form-control" name="id" required>
+
                        <label for="name">Name</label>
                        <input type ="text" class="form-control" name="name" >
+
                        <input type="submit" value="submit" class="btn btn-primary">
                    </div>
                </form>

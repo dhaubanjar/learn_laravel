@@ -31,6 +31,9 @@ class CategoryRequest extends FormRequest
                     "name"=>"required|max:255"
                     ];
             }
+
+
+
             case 'PUT': {
                 return ["name"=>"required|max:255"];
             }
@@ -42,7 +45,7 @@ class CategoryRequest extends FormRequest
     public function messages()
     {
         return[
-            "name.required"=>"ashok is fucker"
+            "name.required"=>"Name field cannot be empty.", "id.required"=>"Id field cannot be empty."
         ];
     }
 }
