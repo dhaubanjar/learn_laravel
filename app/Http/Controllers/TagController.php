@@ -16,9 +16,9 @@ class TagController extends Controller
     public function index()
     {
         $tags=Tag::all();
-        return response()->json($tags, 200);
-//        return view('tag.index',[
-//            'tags'=>$tags]);
+//        return response()->json($tags, 200);
+        return view('tag.index',[
+            'tags'=>$tags]);
     }
 
     /**
@@ -37,7 +37,7 @@ class TagController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(TagRequest $request)
+    public function store(Request $request)
     {
         $tag = new Tag();
         $tag->id=$request->get('id');
@@ -71,7 +71,7 @@ class TagController extends Controller
     {
         $tag=Tag::find($id);
         return view('tag.edit',[
-            'tag'=>$tag
+            "tag"=>$tag
         ]);
     }
 
@@ -84,7 +84,11 @@ class TagController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Session::flash("success","A tag $id has been updated.");
+        $tag=Tag::findorfail($id);
+        $tag->name=$request->get('name');
+        $tag->save();
+        return redirect('/tag');
     }
 
     /**
@@ -95,6 +99,9 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Session::flash("success","A tag has been deleted.");
+        $tag=Tag::findorfail($id);
+        $tag->delete();
+        return back();
     }
 }

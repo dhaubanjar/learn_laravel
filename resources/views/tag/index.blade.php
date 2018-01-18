@@ -23,7 +23,7 @@
                                 <td>{{$tag->id}}</td>
                                 <td>{{$tag->name}}</td>
                                 <td>
-                                    <form method="post" action="{{route('tag.delete',$tag->id)}}">
+                                    <form method="post" action="{!! route("tag.delete",$tag->id) !!}">
                                         {{method_field('delete')}}
                                         {{csrf_field()}}
                                         <a href="{{route("tag.edit",$tag->id)}}"  class="btn btn-success">Edit</a>

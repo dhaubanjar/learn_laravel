@@ -31,8 +31,10 @@ Route::get('/post/{id}/show','PostController@show')->name('post.show');
 //Tag
 Route::get('/tag','TagController@index')->name('tag.index')->middleware('auth');
 Route::get('/tag/create-form','TagController@create')->name('tag.create');
-Route::get('/tag/store','TagController@store')->name('tag.store');
-Route::get('/tag/edit','TagController@edit')->name('tag.edit');
+Route::post('/tag/store','TagController@store')->name('tag.store');
+Route::get('/tag/{id}/edit','TagController@edit')->name('tag.edit');
+Route::put('/tag/{id}','TagController@update')->name('tag.update');
+Route::delete('/tag/{id}', 'TagController@destroy')->name('tag.delete');
 Route::get('/', function () {
     return view('welcome');
 });
